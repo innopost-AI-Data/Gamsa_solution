@@ -51,7 +51,7 @@ def register():
 @app.route('/forgot_password')
 def forgot_password():
     return render_template("forgot-password.html")
-@app.route('/not-found')
+@app.route('/not_found')
 def not_found():
     return render_template("404.html")
 @app.route('/blank')
