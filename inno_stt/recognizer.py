@@ -279,7 +279,7 @@ class Recognizer:
         if self.decoding_mode == 'ctc_decoder':
             self.ctc_decoder = CTCDecoder()
      #       self.scorer = Scorer(alpha=1.0, beta=-1.0, model_path=self.lm_path, vocabulary=self.vocabulary)
-            self.scorer = Scorer(alpha=0.3, beta=2.0, model_path=self.lm_path, vocabulary=self.vocabulary)
+            #self.scorer = Scorer(alpha=0.3, beta=2.0, model_path=self.lm_path, vocabulary=self.vocabulary)
            # print('scorer:', self.scorer)
      #   elif self.decoding_mode == 'beamsearch_ngram':
            # self.scorer = Scorer(alpha=2.0, beta=-2.0, model_path=self.lm_path, vocabulary=dataset_vocab)

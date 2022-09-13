@@ -1,3 +1,4 @@
+from fileinput import filename
 from flask import Flask, render_template, request, jsonify
 from inno_ocr.main import run
 import os
@@ -12,13 +13,11 @@ import json
 from inno_stt.recognizer import Recognizer
 
 stt_recognizer = Recognizer(output_dir='./inno_stt/logs',
-                        model_cfg='../tasks/SpeechRecognition/kconfspeech/configs/jasper10x5dr_sp_offline_specaugment.yaml',
-                        ckpt='../tasks/SpeechRecognition/kconfspeech/results/Jasper_epoch95_checkpoint.pt',
-                        task_path="../tasks.SpeechRecognition.kconfspeech.local.manifest",
-                        vocab="../tasks/SpeechRecognition/kconfspeech/data/KconfSpeech/vocab",
+                        model_cfg='./inno_stt/configs/jasper10x5dr_sp_offline_specaugment.yaml',
+                        ckpt='./inno_stt/results/Jasper_epoch60_checkpoint.pt',
+                        task_path="./inno_stt/manifest",
+                        vocab="./inno_stt/vocab",
                         decoding_mode='ctc_decoder',
-#                        decoding_mode='',
-                        lm_path="../tasks/SpeechRecognition/kconfspeech/data/KconfSpeech/5gram_korean.binary"
                         )
 stt_recognizer.load_model()
 
@@ -32,10 +31,32 @@ def homepage():
 @app.route('/stt')
 def stt():
     return render_template("stt.html")
+
 @app.route('/inference_stt', methods=['POST'])
 def inference_stt():
     data = request.get_json()
     dec_data = base64.b64decode(data["data"])
+    os.makedirs('./inno_stt/logs', exist_ok=True)
+    file_name = os.path.join('./inno_stt/logs', secure_filename(str(uuid.uuid4())))
+    wav_file_name = file_name + '.wav'
+
+    with open(file_name, mode='wb') as fd:
+        fd.write(dec_data)
+    i = ffmpeg.input(filename).output('./inno_stt/'+wav_file_name, format='wav', acodec='pcm_s16le', ac=1, ar=16000)
+    print('i', i)
+    # _ = (ffmpeg.input(file_name)
+    #            .output(wav_file_name, format='wav', acodec='pcm_s16le', ac=1, ar=16000)
+    #            .overwrite_output()
+    #            .global_args('-hide_banner')
+    #            .global_args('-loglevel', 'error')
+    #            .run())
+
+    # text = stt_recognizer.transcribe(wav_file_name, option=1)
+
+    # os.remove(wav_file_name)
+    # os.remove(file_name)
+
+    # return jsonify({"text": text})
     return ""
 @app.route('/ner')
 def ner():
