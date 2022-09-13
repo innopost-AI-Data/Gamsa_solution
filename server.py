@@ -12,16 +12,16 @@ import uuid
 import json
 from inno_stt.recognizer import Recognizer
 
-stt_recognizer = Recognizer(output_dir='./inno_stt/logs',
-                        model_cfg='../tasks/SpeechRecognition/kconfspeech/configs/jasper10x5dr_sp_offline_specaugment.yaml',
-                        ckpt='../tasks/SpeechRecognition/kconfspeech/results/Jasper_epoch95_checkpoint.pt',
-                        task_path="../tasks.SpeechRecognition.kconfspeech.local.manifest",
-                        vocab="../tasks/SpeechRecognition/kconfspeech/data/KconfSpeech/vocab",
-                        decoding_mode='ctc_decoder',
-#                        decoding_mode='',
-                        lm_path="../tasks/SpeechRecognition/kconfspeech/data/KconfSpeech/5gram_korean.binary"
-                        )
-stt_recognizer.load_model()
+# stt_recognizer = Recognizer(output_dir='./inno_stt/logs',
+#                         model_cfg='../tasks/SpeechRecognition/kconfspeech/configs/jasper10x5dr_sp_offline_specaugment.yaml',
+#                         ckpt='../tasks/SpeechRecognition/kconfspeech/results/Jasper_epoch95_checkpoint.pt',
+#                         task_path="../tasks.SpeechRecognition.kconfspeech.local.manifest",
+#                         vocab="../tasks/SpeechRecognition/kconfspeech/data/KconfSpeech/vocab",
+#                         decoding_mode='ctc_decoder',
+# #                        decoding_mode='',
+#                         lm_path="../tasks/SpeechRecognition/kconfspeech/data/KconfSpeech/5gram_korean.binary"
+#                         )
+# stt_recognizer.load_model()
 
 ## ner
 # 변수 + 토크나이저 + 모델 불러오기
