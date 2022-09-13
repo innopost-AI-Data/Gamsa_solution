@@ -6,6 +6,15 @@ import numpy as np
 from media import tokenization_kobert
 from transformers import TFBertModel
 
+tokenizer = tokenization_kobert.KoBertTokenizer.from_pretrained('monologg/kobert')
+new_model = tf.keras.models.load_model("media/kobert_tf2crf_all_es10",custom_objects={"TFBertModel":TFBertModel.from_pretrained("monologg/kobert", from_pt=True)})
+
+# 라벨 사전
+index_to_ner = {0: '-', 1: 'AC_B', 2: 'AC_I', 3: 'CT_B', 4: 'CT_I', 5: 'DR_B', 6: 'DR_I', 7: 'DT_B', 8: 'DT_I', 9: 'EV_B', 10: 'EV_I', 11: 'LC_B', 12: 'LC_I', 13: 'MY_B', 14: 'MY_I', 15: 'NOG_B', 16: 'NOG_I', 17: 'OG_B', 18: 'OG_I', 19: 'QT_B', 20: 'QT_I', 21: 'TI_B', 22: 'TI_I', 23: 'TX_B', 24: 'TX_I', 25: '[PAD]'}
+
+# 문장길이
+max_len = 178
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -16,11 +25,11 @@ def homepage():
 def stt():
     return render_template("index.html")
 
-# @app.route('/ner')
-# ## 문제 : url_for이용해서 인자가 ner2로 전달하려는데 안된다.. 왜그런지 알수가 없다
-# ## url_for(ner2,변수지정,변수지정2,....)
-# ## ... def ner2(변수,변수2....)
-# ## 그래서 이 변수들을 ner2 맨 첫번째에 넣고 싶은데 그러면 오류남 ㅜㅜ
+@app.route('/ner')
+## 문제 : url_for이용해서 인자가 ner2로 전달하려는데 안된다.. 왜그런지 알수가 없다
+## url_for(ner2,변수지정,변수지정2,....)
+## ... def ner2(변수,변수2....)
+## 그래서 이 변수들을 ner2 맨 첫번째에 넣고 싶은데 그러면 오류남 ㅜㅜ
 # def ner():
 #     tokenizer2 = tokenization_kobert.KoBertTokenizer.from_pretrained('monologg/kobert')
 #     new_model2 = tf.keras.models.load_model("media/kobert_tf2crf_all_es10",custom_objects={"TFBertModel":TFBertModel.from_pretrained("monologg/kobert", from_pt=True)})
@@ -37,16 +46,18 @@ def stt():
 def ner():
     # 그리고 여기서 변수 선언하면 이 함수가 계속 반복해서 작동되니깐 한번만 실행하고 싶은데 안됨
     # 전역변수 선언도 안돼..
-    sentences = request.form.get("sentences")
-    tokenizer = tokenization_kobert.KoBertTokenizer.from_pretrained('monologg/kobert')
-    new_model = tf.keras.models.load_model("media/kobert_tf2crf_all_es10",custom_objects={"TFBertModel":TFBertModel.from_pretrained("monologg/kobert", from_pt=True)})
+    # sentences = request.form.get("sentences")
+    # tokenizer = tokenization_kobert.KoBertTokenizer.from_pretrained('monologg/kobert')
+    # new_model = tf.keras.models.load_model("media/kobert_tf2crf_all_es10",custom_objects={"TFBertModel":TFBertModel.from_pretrained("monologg/kobert", from_pt=True)})
 
     if request.method == "POST":
-        # 라벨 사전
-        index_to_ner = {0: '-', 1: 'AC_B', 2: 'AC_I', 3: 'CT_B', 4: 'CT_I', 5: 'DR_B', 6: 'DR_I', 7: 'DT_B', 8: 'DT_I', 9: 'EV_B', 10: 'EV_I', 11: 'LC_B', 12: 'LC_I', 13: 'MY_B', 14: 'MY_I', 15: 'NOG_B', 16: 'NOG_I', 17: 'OG_B', 18: 'OG_I', 19: 'QT_B', 20: 'QT_I', 21: 'TI_B', 22: 'TI_I', 23: 'TX_B', 24: 'TX_I', 25: '[PAD]'}
+        # # 라벨 사전
+        # index_to_ner = {0: '-', 1: 'AC_B', 2: 'AC_I', 3: 'CT_B', 4: 'CT_I', 5: 'DR_B', 6: 'DR_I', 7: 'DT_B', 8: 'DT_I', 9: 'EV_B', 10: 'EV_I', 11: 'LC_B', 12: 'LC_I', 13: 'MY_B', 14: 'MY_I', 15: 'NOG_B', 16: 'NOG_I', 17: 'OG_B', 18: 'OG_I', 19: 'QT_B', 20: 'QT_I', 21: 'TI_B', 22: 'TI_I', 23: 'TX_B', 24: 'TX_I', 25: '[PAD]'}
 
-        # 문장길이
-        max_len = 178
+        # # 문장길이
+        # max_len = 178
+
+        sentences = request.form.get("sentences")
 
         def ner_inference(test_sentence): # 문장 집어넣기
             result = []
