@@ -10,7 +10,7 @@ pip install flask
 python server.py
 ```
 
-## ner 모듈
+### ner 모듈
 |이름|버전|
 |------|---|
 |python|3.8.13|
