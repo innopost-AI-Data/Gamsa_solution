@@ -393,29 +393,31 @@
                         <form action="/ner" method="POST">
                             <input type="text" name="sentences" placeholder="plz text here" style="width:1200px;height:30px;font-size:25px;">
                             <input type="submit" value="Enter">
-                        </form>
+                        </form> 
                     </div>
                     <br>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">입력 하신 문장</h6>
+                            <h4 class="m-0 font-weight-bold text-primary">입력 하신 문장</h4>
                         </div>
-                        <p>{{ sen }}</p>
+                        <p style="font-size:25px;">{{ sen }}</p>
                     </div>
+                    <br>
                     <div class="card shadow mb-4">
-                        <h2>태깅된 문자들</h2>
+                        <div class="card-header py-3">
+                            <h4 class="m-0 font-weight-bold text-primary">태깅된 문자들</h4>
+                        </div>
                         {% for a in ans %}
-                        <p>
-                            {{ a }}
-                        </p>
+                        <p style="font-size:25px;">{{ a }}</p>
                         {% endfor %}
                     </div>
+                    <br>
                     <div class="card shadow mb-4">
-                        <h2>실제 태깅된 형태</h2>
+                        <div class="card-header py-3">
+                            <h4 class="m-0 font-weight-bold text-primary">실제 태깅된 형태</h4>
+                        </div>
                         {% for file in files %}
-                        <p>
-                            {{ file }}
-                        </p>
+                        <p style="font-size:25px;">{{ file }}</p>
                         {% endfor %}
                     </div>
                 </div>
