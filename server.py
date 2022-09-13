@@ -11,6 +11,7 @@ import base64
 import uuid
 import json
 from inno_stt.recognizer import Recognizer
+from inno_mrc.model import main
 
 # stt_recognizer = Recognizer(output_dir='./inno_stt/logs',
 #                         model_cfg='../tasks/SpeechRecognition/kconfspeech/configs/jasper10x5dr_sp_offline_specaugment.yaml',
@@ -44,7 +45,7 @@ from inno_ner import tokenization_kobert
 from transformers import TFBertModel
 
 tokenizer = tokenization_kobert.KoBertTokenizer.from_pretrained('monologg/kobert')
-new_model = tf.keras.models.load_model("inno_ner/kobert_tf2crf_all_es10",custom_objects={"TFBertModel":TFBertModel.from_pretrained("monologg/kobert", from_pt=True)})
+# new_model = tf.keras.models.load_model("inno_ner/kobert_tf2crf_all_es10",custom_objects={"TFBertModel":TFBertModel.from_pretrained("monologg/kobert", from_pt=True)})
 
 # 라벨 사전
 index_to_ner = {0: '-', 1: 'AC_B', 2: 'AC_I', 3: 'CT_B', 4: 'CT_I', 5: 'DR_B', 6: 'DR_I', 7: 'DT_B', 8: 'DT_I', 9: 'EV_B', 10: 'EV_I', 11: 'LC_B', 12: 'LC_I', 13: 'MY_B', 14: 'MY_I', 15: 'NOG_B', 16: 'NOG_I', 17: 'OG_B', 18: 'OG_I', 19: 'QT_B', 20: 'QT_I', 21: 'TI_B', 22: 'TI_I', 23: 'TX_B', 24: 'TX_I', 25: '[PAD]'}
@@ -83,7 +84,7 @@ def ner():
             tokenized_sentence = np.array([tokenizer.encode(test_sentence, max_length=max_len, truncation=True, padding='max_length')])
             tokenized_mask = np.array([[int(x!=1) for x in tokenized_sentence[0].tolist()]])
             # 모델에 투입
-            ans = new_model.predict([tokenized_sentence, tokenized_mask])
+            # ans = new_model.predict([tokenized_sentence, tokenized_mask])
             tokens = tokenizer.convert_ids_to_tokens(tokenized_sentence[0])
             
             new_tokens, new_labels = [], []
@@ -154,7 +155,14 @@ def ner():
 
 @app.route('/mrc')
 def mrc():
-    return render_template("index.html")
+    return render_template("mrc.html")
+
+@app.route("/mrc_inference", methods=['GET', 'POST'])
+def find_answer():
+    if request.method == 'POST':
+        query = request.form["query"]
+        result = main(query)
+    return render_template("mrc_result.html", query=query, result=result)
 
 @app.route('/ocr')
 def ocr():

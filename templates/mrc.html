@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRC</title>
+    <style>
+		#header {
+			background-color:rgb(226, 183, 255);
+            text-align:center;
+			height:100px;
+		}
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>MRC</h1>
+    </div>
+	<div id="input">
+        <form action="/mrc_inference" method="post">
+            <input type="text" name="query" size="70">
+            <input type="submit" value="정답 추출">
+        </form>
+	</div>
+    <div id="output">
+    {% block body %} {% endblock %}
+    </div>
+</body>
+</html>

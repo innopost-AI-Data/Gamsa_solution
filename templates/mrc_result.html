@@ -1,0 +1,55 @@
+{% extends "mrc.html" %}
+{% block body %}
+<style>
+    .table-type1 {
+        border-spacing: 0;
+    }
+    .table-type1 tr th, .table-type1 tr td {
+        border: 1px solid #a7a7a7;
+    }
+    #rank {
+        background-color: #c1d1ff;
+        text-align: center;
+    }
+    .column {
+        background-color: #dde5ff;
+        text-align: center;
+    }
+    #answer {
+        background-color: #fef2ff;
+        font-weight: bold;
+
+    }
+</style>
+<div class="container">
+        <table class="table-type1">
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+                <col style="width: 80%;">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th class="column">질문</th>
+                    <td colspan='2'>{{ query }}</td>
+                </tr>
+                {% for i in range(5) %}
+                <tr>
+                    <td id="rank" rowspan='3'>{{ i+1 }}</td>
+                    <td class="column">출처</td>
+                    <td>예) 국가공무원법 1조 1항</td>
+                </tr>
+                <tr>
+                    <td class="column">항내용</td>
+                    <td>{{ result[i][0]['context'] }}</td>
+                </tr>
+                <tr>
+                    <td class="column">정답</td>
+                    <td id="answer">{{ result[i][0]['answer'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
