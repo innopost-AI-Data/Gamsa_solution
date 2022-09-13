@@ -1,4 +1,27 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
+from inno_ocr.main import run
+import os
+from werkzeug.utils import secure_filename
+import numpy as np
+import librosa
+import soundfile as sf
+import ffmpeg
+import base64
+import uuid
+import json
+from inno_stt.recognizer import Recognizer
+
+stt_recognizer = Recognizer(output_dir='./inno_stt/logs',
+                        model_cfg='../tasks/SpeechRecognition/kconfspeech/configs/jasper10x5dr_sp_offline_specaugment.yaml',
+                        ckpt='../tasks/SpeechRecognition/kconfspeech/results/Jasper_epoch95_checkpoint.pt',
+                        task_path="../tasks.SpeechRecognition.kconfspeech.local.manifest",
+                        vocab="../tasks/SpeechRecognition/kconfspeech/data/KconfSpeech/vocab",
+                        decoding_mode='ctc_decoder',
+#                        decoding_mode='',
+                        lm_path="../tasks/SpeechRecognition/kconfspeech/data/KconfSpeech/5gram_korean.binary"
+                        )
+stt_recognizer.load_model()
+
 
 app = Flask(__name__)
 
@@ -8,8 +31,12 @@ def homepage():
 
 @app.route('/stt')
 def stt():
-    return render_template("index.html")
-
+    return render_template("stt.html")
+@app.route('/inference_stt', methods=['POST'])
+def inference_stt():
+    data = request.get_json()
+    dec_data = base64.b64decode(data["data"])
+    return ""
 @app.route('/ner')
 def ner():
     return render_template("index.html")
@@ -20,7 +47,23 @@ def mrc():
 
 @app.route('/ocr')
 def ocr():
-    return render_template("index.html")
+    return render_template("ocr.html")
+
+@app.route('/inference_ocr', methods=['POST'])
+def inference_ocr():
+    if 'file' not in request.files:
+        print('No file part')
+        return jsonify(result=render_template("result_file.html", filename = "", result=""))
+    else:
+        file = request.files.get('file')
+        if not os.path.exists('./inno_ocr/test/'):
+            os.makedirs('./inno_ocr/test/')
+        file.save('./inno_ocr/test/' + file.filename)
+        target = []
+        target_dir = './inno_ocr/test/'
+        target.append(target_dir + file.filename)
+        result = run(target)
+    return jsonify(result=render_template("result_file.html", filename = file.filename, result=result))
 
 @app.route('/buttons')
 def buttons():
