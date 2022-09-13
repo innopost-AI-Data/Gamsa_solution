@@ -391,18 +391,26 @@
                     <!-- Content Row -->
                     <div class="row">
                         <form action="/ner" method="POST">
-                            <input type="text" name="sentences" placeholder="plz text here" style="width:1200px;height:25px;font-size:25px;">
+                            <input type="text" name="sentences" placeholder="plz text here" style="width:1200px;height:30px;font-size:25px;">
                             <input type="submit" value="Enter">
                         </form>
-                        <hr>
-                        <h2>입력 하신 문장</h2>
+                    </div>
+                    <br>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">입력 하신 문장</h6>
+                        </div>
                         <p>{{ sen }}</p>
+                    </div>
+                    <div class="card shadow mb-4">
                         <h2>태깅된 문자들</h2>
                         {% for a in ans %}
                         <p>
                             {{ a }}
                         </p>
                         {% endfor %}
+                    </div>
+                    <div class="card shadow mb-4">
                         <h2>실제 태깅된 형태</h2>
                         {% for file in files %}
                         <p>
@@ -410,7 +418,6 @@
                         </p>
                         {% endfor %}
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
