@@ -298,6 +298,9 @@ input[type="checkbox"] {
 textarea {
   overflow: auto;
   resize: vertical;
+  width: 500px;
+  height: 800px;
+
 }
 
 fieldset {
@@ -11279,3 +11282,6 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+
+
