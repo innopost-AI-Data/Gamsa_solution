@@ -120,7 +120,7 @@ def run(target):
     for i in tqdm(target):
         ext = os.path.splitext(i)[-1]
         if ext.lower() == '.pdf':
-            pages = convert_from_path(i, dpi=300, poppler_path='./poppler-0.68.0/bin')
+            pages = convert_from_path(i, dpi=300, poppler_path='./inno_ocr/poppler-0.68.0/bin')
             for j, page in enumerate(pages):
                 page.save(f'{img_dir}/{os.path.basename(i)[:-4]}_page{j + 1:0>2d}.jpg')
                 img_path = f'{img_dir}/{os.path.basename(i)[:-4]}_page{j + 1:0>2d}.jpg'
