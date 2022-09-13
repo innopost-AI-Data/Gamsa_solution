@@ -28,11 +28,11 @@ stt_recognizer.load_model()
 import tensorflow as tf
 import numpy as np
 
-from media import tokenization_kobert
+from inno_ner import tokenization_kobert
 from transformers import TFBertModel
 
 tokenizer = tokenization_kobert.KoBertTokenizer.from_pretrained('monologg/kobert')
-new_model = tf.keras.models.load_model("media/kobert_tf2crf_all_es10",custom_objects={"TFBertModel":TFBertModel.from_pretrained("monologg/kobert", from_pt=True)})
+new_model = tf.keras.models.load_model("inno_ner/kobert_tf2crf_all_es10",custom_objects={"TFBertModel":TFBertModel.from_pretrained("monologg/kobert", from_pt=True)})
 
 # 라벨 사전
 index_to_ner = {0: '-', 1: 'AC_B', 2: 'AC_I', 3: 'CT_B', 4: 'CT_I', 5: 'DR_B', 6: 'DR_I', 7: 'DT_B', 8: 'DT_I', 9: 'EV_B', 10: 'EV_I', 11: 'LC_B', 12: 'LC_I', 13: 'MY_B', 14: 'MY_I', 15: 'NOG_B', 16: 'NOG_I', 17: 'OG_B', 18: 'OG_I', 19: 'QT_B', 20: 'QT_I', 21: 'TI_B', 22: 'TI_I', 23: 'TX_B', 24: 'TX_I', 25: '[PAD]'}
