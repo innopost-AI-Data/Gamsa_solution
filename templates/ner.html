@@ -391,26 +391,35 @@
                     <!-- Content Row -->
                     <div class="row">
                         <form action="/ner" method="POST">
-                            <input type="text" name="sentences" placeholder="plz text here" style="width:1200px;height:25px;font-size:25px;">
+                            <input type="text" name="sentences" placeholder="plz text here" style="width:1200px;height:30px;font-size:25px;">
                             <input type="submit" value="Enter">
-                        </form>
-                        <hr>
-                        <h2>입력 하신 문장</h2>
-                        <p>{{ sen }}</p>
-                        <h2>태깅된 문자들</h2>
+                        </form> 
+                    </div>
+                    <br>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h4 class="m-0 font-weight-bold text-primary">입력 문장</h4>
+                        </div>
+                        <p style="font-size:25px;">{{ sen }}</p>
+                    </div>
+                    <br>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h4 class="m-0 font-weight-bold text-primary">개체명 태깅 결과</h4>
+                        </div>
                         {% for a in ans %}
-                        <p>
-                            {{ a }}
-                        </p>
-                        {% endfor %}
-                        <h2>실제 태깅된 형태</h2>
-                        {% for file in files %}
-                        <p>
-                            {{ file }}
-                        </p>
+                        <p style="font-size:25px;">{{ a }}</p>
                         {% endfor %}
                     </div>
-
+                    <br>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h4 class="m-0 font-weight-bold text-primary">실제 태깅 형태</h4>
+                        </div>
+                        {% for file in files %}
+                        <p style="font-size:25px;">{{ file }}</p>
+                        {% endfor %}
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
 

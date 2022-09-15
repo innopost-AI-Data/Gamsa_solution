@@ -83,6 +83,9 @@ new_model = tf.keras.models.load_model("inno_ner/kobert_tf2crf_all_es10",custom_
 # 라벨 사전
 index_to_ner = {0: '-', 1: 'AC_B', 2: 'AC_I', 3: 'CT_B', 4: 'CT_I', 5: 'DR_B', 6: 'DR_I', 7: 'DT_B', 8: 'DT_I', 9: 'EV_B', 10: 'EV_I', 11: 'LC_B', 12: 'LC_I', 13: 'MY_B', 14: 'MY_I', 15: 'NOG_B', 16: 'NOG_I', 17: 'OG_B', 18: 'OG_I', 19: 'QT_B', 20: 'QT_I', 21: 'TI_B', 22: 'TI_I', 23: 'TX_B', 24: 'TX_I', 25: '[PAD]'}
 
+# 라벨 -> 한국어화 사전
+index_to_ner2 = {"LC":"지역","OG":"(민간)단체","NOG":"국가기관","DT":"날짜","DR":"기간","TI":"시간","AC":"법률","MY":"금액","QT":"수량","CT":"개수(빈도)","TX":"문서"}
+
 # 문장길이
 max_len = 178
 
@@ -171,15 +174,15 @@ def ner():
                 if aa[i-1][1][:-2] == aa[i][1][:-2]: # 이전 개체명이랑 현재 개체명이랑 같다면
                     ans_text += x[0]
                 elif aa[i-1][1][:-2] != aa[i][1][:-2]: #이전 개체명이랑 현재 개체명이 다르다면
-                    ans.append(str(aa[i-1][1][:-2]+" : "+ ans_text))
+                    ans.append(index_to_ner2[str(aa[i-1][1][:-2])]+" : "+ ans_text)
                     ans_text = ""
                     ans_text += x[0]
             elif x[1] == "-":
-                ans.append(str(aa[i-1][1][:-2]+" : "+ ans_text))
+                ans.append(index_to_ner2[str(aa[i-1][1][:-2])]+" : "+ ans_text)
                 ans_text = ""
         # 마지막 토큰까지 개체명인 경우 elif에 해당하지 않아서 ans에 추가되지 않으므로 개별로 설정
         if ans_text != "":
-            ans.append(str(aa[i-1][1][:-2]+" : "+ ans_text))
+            ans.append(index_to_ner2[str(aa[i-1][1][:-2])]+" : "+ ans_text)
             ans_text = ""
 
         # " : " 요소를 제거하자
