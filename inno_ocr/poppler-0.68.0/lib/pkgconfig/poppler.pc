@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 prefix=C:/temp/poppler-install-dir/x86/poppler-0.69.0
 libdir=C:/temp/poppler-install-dir/x86/poppler-0.69.0/lib
 includedir=C:/temp/poppler-install-dir/x86/poppler-0.69.0/include
@@ -8,3 +9,15 @@ Version: 0.68.0
 
 Libs: -L${libdir} -lpoppler
 Cflags: -I${includedir}/poppler
+=======
+prefix=C:/temp/poppler-install-dir/x86/poppler-0.69.0
+libdir=C:/temp/poppler-install-dir/x86/poppler-0.69.0/lib
+includedir=C:/temp/poppler-install-dir/x86/poppler-0.69.0/include
+
+Name: poppler
+Description: PDF rendering library
+Version: 0.68.0
+
+Libs: -L${libdir} -lpoppler
+Cflags: -I${includedir}/poppler
+>>>>>>> 8762e09a880b135f536c1cfc800c459051ce7d8e

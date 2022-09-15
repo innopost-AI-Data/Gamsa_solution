@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 xpdf is written by Derek Noonburg <derekn@foolabs.com>
 
 libpoppler is a fork of xpdf-3.00
 
 Current Maintainer: Albert Astals Cid <aacid@kde.org>
+=======
+xpdf is written by Derek Noonburg <derekn@foolabs.com>
+
+libpoppler is a fork of xpdf-3.00
+
+Current Maintainer: Albert Astals Cid <aacid@kde.org>
+>>>>>>> 8762e09a880b135f536c1cfc800c459051ce7d8e

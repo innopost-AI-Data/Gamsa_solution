@@ -144,9 +144,9 @@ class Recognizer:
                    # print('m:', m(t_log_probs_e.squeeze()))
                    # print('vocab len :', len(self.vocabulary))
                    # print('scorer :', self.scorer)
-                    res = ctc_beam_search_decoder(m(t_log_probs_e.squeeze()), self.vocabulary,
-                                  beam_size=self.beam_size,
-                                  ext_scoring_func=self.scorer)
+                    # res = ctc_beam_search_decoder(m(t_log_probs_e.squeeze()), self.vocabulary,
+                    #               beam_size=self.beam_size,
+                    #               ext_scoring_func=self.scorer)
                    # print('res : ', res[0])
                 elif self.decoding_mode == 'beamsearch_ngram':
                     prob_tensor, pred_tensor = self.beamsearch_decoder_lm(
@@ -279,7 +279,7 @@ class Recognizer:
         if self.decoding_mode == 'ctc_decoder':
             self.ctc_decoder = CTCDecoder()
      #       self.scorer = Scorer(alpha=1.0, beta=-1.0, model_path=self.lm_path, vocabulary=self.vocabulary)
-            self.scorer = Scorer(alpha=0.3, beta=2.0, model_path=self.lm_path, vocabulary=self.vocabulary)
+            #self.scorer = Scorer(alpha=0.3, beta=2.0, model_path=self.lm_path, vocabulary=self.vocabulary)
            # print('scorer:', self.scorer)
      #   elif self.decoding_mode == 'beamsearch_ngram':
            # self.scorer = Scorer(alpha=2.0, beta=-2.0, model_path=self.lm_path, vocabulary=dataset_vocab)
