@@ -1,4 +1,4 @@
-import argparse
+# import argparse
 import logging
 from datasets import Dataset
 import numpy as np
@@ -37,7 +37,7 @@ from transformers import (
     XLMRobertaTokenizer,
 )
 
-from tokenization_kobert import KoBertTokenizer
+# from tokenization_kobert import KoBertTokenizer
 
 logger = logging.getLogger(__name__)
 
@@ -47,8 +47,8 @@ MODEL_CLASSES = {
     "xlnet": (XLNetConfig, XLNetForQuestionAnswering, XLNetTokenizer),
     "xlm": (XLMConfig, XLMForQuestionAnswering, XLMTokenizer),
     "distilbert": (DistilBertConfig, DistilBertForQuestionAnswering, DistilBertTokenizer),
-    "albert": (AlbertConfig, AlbertForQuestionAnswering, AlbertTokenizer),
-    "kobert": (BertConfig, BertForQuestionAnswering, KoBertTokenizer),
+    "albert": (AlbertConfig, AlbertForQuestionAnswering, AlbertTokenizer)
+    # "kobert": (BertConfig, BertForQuestionAnswering, KoBertTokenizer)
     #"distilkobert": (DistilBertConfig, DistilBertForQuestionAnswering, KoBertTokenizer),
 }
 
@@ -57,7 +57,7 @@ DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 def main(input):
     question = input
     model_type = 'bert'
-    model_name_or_path = './KorQuAD_Gamsa_models'
+    model_name_or_path = './inno_mrc/KorQuAD_Gamsa_models'
     max_answer_length = 30
     max_seq_length = 384
     doc_stride = 128
@@ -156,7 +156,7 @@ def main(input):
         
         """
         # Read 'stopword.txt'
-        txt = open("law_stopwords.txt", "r", encoding='UTF8') # 2022.01.04
+        txt = open("./inno_mrc/law_stopwords.txt", "r", encoding='UTF8') # 2022.01.04
         stopword = txt.read()
         txt.close()
         stopword_list = stopword.split('\n')
@@ -176,10 +176,10 @@ def main(input):
     
     import pickle
     
-    with open('all_hang_2.pickle', 'rb') as f:
+    with open('./inno_mrc/all_hang_2.pickle', 'rb') as f:
         all_law = pickle.load(f)
     
-    jo_mtrx = tfidf.fit_transform(all_law['nouns'])
+    hang_mtrx = tfidf.fit_transform(all_law['nouns'])
     features = tfidf.get_feature_names()
     
     input_noun = [t for t in extract_noun(question).split(' ') if t in features]
@@ -187,22 +187,26 @@ def main(input):
     
     input_mtrx = tfidf.transform([input_noun])
 
-    cos_sim = cosine_similarity(jo_mtrx, input_mtrx)
+    cos_sim = cosine_similarity(hang_mtrx, input_mtrx)
     cos_flat = cos_sim.flatten()
     sim_rank_idx = cos_flat.argsort()[::-1]
 
-    raw_name = []
-    jo_doc = []
+    law = []
+    jo = []
+    hang = []
+    hang_doc = []
     sim = []
     for rank, idx in enumerate(sim_rank_idx):
         # 상위 n위까지 보여주기?
         if rank == 20:
             break
-        raw_name.append(all_law.loc[idx, '법명'])
-        jo_doc.append(all_law.loc[idx, '항 원본'])
+        law.append(all_law.loc[idx, '법명'])
+        jo.append(all_law.loc[idx, '조 이름'])
+        hang.append(all_law.loc[idx, '항 번호'])
+        hang_doc.append(all_law.loc[idx, '항 원본'])
         sim.append(cos_flat[idx])
 
-    rank_df = pd.DataFrame((zip(raw_name, jo_doc, sim)), columns = ['법명', '항 원본', '유사도'])
+    rank_df = pd.DataFrame((zip(law, jo, hang, hang_doc, sim)), columns = ['법명', '조 이름', '항 번호', '항 원본', '유사도'])
 
     # print('df', rank_df)
     # print(rank_df['조 원본'].values)
@@ -272,6 +276,7 @@ def main(input):
                     valid_answers.append(
                         {
                             "score": start_logits[start_index] + end_logits[end_index],
+                            "source": rank_df.loc[i, '법명']+' '+rank_df.loc[i, '조 이름'][:rank_df.loc[i, '조 이름'].find('(')]+' '+str(rank_df.loc[i, '항 번호'])+'항',
                             "context": context,
                             "answer": context[start_char:end_char]
                         }

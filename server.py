@@ -158,7 +158,7 @@ def mrc():
     return render_template("mrc.html")
 
 @app.route("/mrc_inference", methods=['GET', 'POST'])
-def find_answer():
+def mrc_inference():
     if request.method == 'POST':
         query = request.form["query"]
         result = main(query)
