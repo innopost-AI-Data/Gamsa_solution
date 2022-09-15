@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 prefix=C:/temp/poppler-install-dir/x86/poppler-0.69.0
 libdir=C:/temp/poppler-install-dir/x86/poppler-0.69.0/lib
 includedir=C:/temp/poppler-install-dir/x86/poppler-0.69.0/include
@@ -10,3 +11,17 @@ Requires.private: poppler = 0.68.0
 
 Libs: -L${libdir} -lpoppler-cpp
 Cflags: -I${includedir}/poppler/cpp
+=======
+prefix=C:/temp/poppler-install-dir/x86/poppler-0.69.0
+libdir=C:/temp/poppler-install-dir/x86/poppler-0.69.0/lib
+includedir=C:/temp/poppler-install-dir/x86/poppler-0.69.0/include
+
+Name: poppler-cpp
+Description: cpp backend for Poppler PDF rendering library
+Version: 0.68.0
+Requires: 
+Requires.private: poppler = 0.68.0
+
+Libs: -L${libdir} -lpoppler-cpp
+Cflags: -I${includedir}/poppler/cpp
+>>>>>>> 8762e09a880b135f536c1cfc800c459051ce7d8e
