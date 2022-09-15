@@ -174,15 +174,15 @@ def ner():
                 if aa[i-1][1][:-2] == aa[i][1][:-2]: # 이전 개체명이랑 현재 개체명이랑 같다면
                     ans_text += x[0]
                 elif aa[i-1][1][:-2] != aa[i][1][:-2]: #이전 개체명이랑 현재 개체명이 다르다면
-                    ans.append(index_to_ner2[str(aa[i-1][1][:-2])]+" : "+ ans_text)
+                    ans.append(str(aa[i-1][1][:-2]+" : "+ ans_text))
                     ans_text = ""
                     ans_text += x[0]
             elif x[1] == "-":
-                ans.append(index_to_ner2[str(aa[i-1][1][:-2])]+" : "+ ans_text)
+                ans.append(str(aa[i-1][1][:-2]+" : "+ ans_text))
                 ans_text = ""
         # 마지막 토큰까지 개체명인 경우 elif에 해당하지 않아서 ans에 추가되지 않으므로 개별로 설정
         if ans_text != "":
-            ans.append(index_to_ner2[str(aa[i-1][1][:-2])]+" : "+ ans_text)
+            ans.append(str(aa[i-1][1][:-2]+" : "+ ans_text))
             ans_text = ""
 
         # " : " 요소를 제거하자
@@ -191,12 +191,21 @@ def ner():
             if x != " : ":
                 ans2.append(x)
 
-        # 영어 개체명에 해당하는 한국어 개체명으로 바꿔서 보이기
+        # 영어 개체명 -> 한국어 개체명
+        for i,x in enumerate(ans2):
+            if x[:2] in list(index_to_ner2.keys()):
+                ans2[i] = ans2[i].replace(x[:2],index_to_ner2[x[:2]])
+            elif x[:3] in list(index_to_ner2.keys()):
+                ans2[i] = ans2[i].replace(x[:3],index_to_ner2[x[:3]])
 
+        # 입력문장 불러오기
         bb = sentences
 
-        print("입력하신 문장 :",bb)
-        print("태깅 데이터셋 :",aa)
+        # 테스트 출력
+        print("입력 문장 :",bb)
+        print("실제 태깅 형태 :",aa)
+
+        ##
 
         return render_template("ner.html",
             files = aa,
