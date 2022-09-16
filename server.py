@@ -11,6 +11,9 @@ import ffmpeg
 import base64
 import uuid
 from inno_stt.recognizer import Recognizer
+
+from inno_mrc.model import main
+
 from inno_ocr.craft.test import test_net,copyStateDict,str2bool
 from inno_ocr.craft.craft import CRAFT
 from inno_ocr.craft import file_utils, imgproc
@@ -78,10 +81,13 @@ from inno_ner import tokenization_kobert
 from transformers import TFBertModel
 
 tokenizer = tokenization_kobert.KoBertTokenizer.from_pretrained('monologg/kobert')
-new_model = tf.keras.models.load_model("inno_ner/kobert_tf2crf_all_es10",custom_objects={"TFBertModel":TFBertModel.from_pretrained("monologg/kobert", from_pt=True)})
+new_model = tf.keras.models.load_model("./inno_ner/kobert_tf2crf_all_es10",custom_objects={"TFBertModel":TFBertModel.from_pretrained("monologg/kobert", from_pt=True)})
 
 # 라벨 사전
 index_to_ner = {0: '-', 1: 'AC_B', 2: 'AC_I', 3: 'CT_B', 4: 'CT_I', 5: 'DR_B', 6: 'DR_I', 7: 'DT_B', 8: 'DT_I', 9: 'EV_B', 10: 'EV_I', 11: 'LC_B', 12: 'LC_I', 13: 'MY_B', 14: 'MY_I', 15: 'NOG_B', 16: 'NOG_I', 17: 'OG_B', 18: 'OG_I', 19: 'QT_B', 20: 'QT_I', 21: 'TI_B', 22: 'TI_I', 23: 'TX_B', 24: 'TX_I', 25: '[PAD]'}
+
+# 라벨 -> 한국어화 사전
+index_to_ner2 = {"LC":"지역","OG":"(민간)단체","NOG":"국가기관","DT":"날짜","DR":"기간","TI":"시간","AC":"법률","MY":"금액","QT":"수량","CT":"개수(빈도)","TX":"문서"}
 
 # 문장길이
 max_len = 178
@@ -188,12 +194,21 @@ def ner():
             if x != " : ":
                 ans2.append(x)
 
-        # 영어 개체명에 해당하는 한국어 개체명으로 바꿔서 보이기
+        # 영어 개체명 -> 한국어 개체명
+        for i,x in enumerate(ans2):
+            if x[:2] in list(index_to_ner2.keys()):
+                ans2[i] = ans2[i].replace(x[:2],index_to_ner2[x[:2]])
+            elif x[:3] in list(index_to_ner2.keys()):
+                ans2[i] = ans2[i].replace(x[:3],index_to_ner2[x[:3]])
 
+        # 입력문장 불러오기
         bb = sentences
 
-        print("입력하신 문장 :",bb)
-        print("태깅 데이터셋 :",aa)
+        # 테스트 출력
+        print("입력 문장 :",bb)
+        print("실제 태깅 형태 :",aa)
+
+        ##
 
         return render_template("ner.html",
             files = aa,
@@ -204,7 +219,14 @@ def ner():
 
 @app.route('/mrc')
 def mrc():
-    return render_template("index.html")
+    return render_template("mrc.html")
+
+@app.route("/mrc_inference", methods=['GET', 'POST'])
+def mrc_inference():
+    if request.method == 'POST':
+        query = request.form["query"]
+        result = main(query)
+    return render_template("mrc_result.html", query=query, result=result)
 
 @app.route('/ocr')
 def ocr():

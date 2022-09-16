@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ko">
 <head>
-
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>MRC</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{url_for('static', filename='vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -19,9 +17,14 @@
 
     <!-- Custom styles for this template-->
     <link href="{{url_for('static', filename='css/sb-admin-2.min.css')}}" rel="stylesheet">
-
+    <!-- <style>
+		#header {
+			background-color:rgb(226, 183, 255);
+            text-align:center;
+			height:100px;
+		}
+    </style> -->
 </head>
-
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -47,7 +50,7 @@
             </div>
 
             <!-- Nav Item - STT -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/stt">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>STT</span></a>
@@ -61,7 +64,7 @@
             </li>
             
             <!-- Nav Item - MRC -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="/mrc">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>MRC</span></a>
@@ -183,8 +186,7 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                                 aria-label="Search" aria-describedby="basic-addon2">
@@ -382,47 +384,29 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
+                    <!--     
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-                        <form action="/ner" method="POST">
-                            <input type="text" name="sentences" placeholder="plz text here" style="width:1200px;height:30px;font-size:25px;">
-                            <input type="submit" value="Enter">
-                        </form> 
+                     -->
+                    
+                    <div>
+                        <h1>MRC</h1>
                     </div>
-                    <br>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h4 class="m-0 font-weight-bold text-primary">입력 문장</h4>
-                        </div>
-                        <p style="font-size:25px;">{{ sen }}</p>
+                    <div>
+                        <form action="/mrc_inference" method="post">
+                            <!-- class="form-control form-control-sm" -->
+                            <input type="text" class="form-control" name="query" size="100" placeholder="질문을 입력하세요" style="width: 93%; display: inline;">
+                            <input type="submit" class="btn btn-primary" value="정답 추출">
+                        </form>
                     </div>
-                    <br>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h4 class="m-0 font-weight-bold text-primary">개체명 태깅 결과</h4>
-                        </div>
-                        {% for a in ans %}
-                        <p style="font-size:25px;">{{ a }}</p>
-                        {% endfor %}
-                    </div>
-                    <br>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h4 class="m-0 font-weight-bold text-primary">실제 태깅 형태</h4>
-                        </div>
-                        {% for file in files %}
-                        <p style="font-size:25px;">{{ file }}</p>
-                        {% endfor %}
+                    <div>
+                    {% block body %} {% endblock %}
                     </div>
                 </div>
-                <!-- /.container-fluid -->
-
+                
             </div>
             <!-- End of Main Content -->
 
