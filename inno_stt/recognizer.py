@@ -5,9 +5,8 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from typing import List
 from inno_stt.utils.helpers import add_ctc_labels, print_dict
 from inno_stt.models import JasperEncoderDecoder
-from inno_stt.modules import AudioPreprocessing, CTCDecoder, BeamSearchDecoderWithLM
+from inno_stt.modules import AudioPreprocessing, CTCDecoder
 from inno_stt.datasets.features import audio_from_file
-# from inno_stt.modules.decoders.ctc_decoders import Scorer, ctc_beam_search_decoder
 import torch
 import torch.nn as nn
 import time
@@ -144,9 +143,9 @@ class Recognizer:
                    # print('m:', m(t_log_probs_e.squeeze()))
                    # print('vocab len :', len(self.vocabulary))
                    # print('scorer :', self.scorer)
-                    res = ctc_beam_search_decoder(m(t_log_probs_e.squeeze()), self.vocabulary,
-                                  beam_size=self.beam_size,
-                                  ext_scoring_func=self.scorer)
+                    # res = ctc_beam_search_decoder(m(t_log_probs_e.squeeze()), self.vocabulary,
+                    #               beam_size=self.beam_size,
+                    #               ext_scoring_func=self.scorer)
                    # print('res : ', res[0])
                 elif self.decoding_mode == 'beamsearch_ngram':
                     prob_tensor, pred_tensor = self.beamsearch_decoder_lm(
