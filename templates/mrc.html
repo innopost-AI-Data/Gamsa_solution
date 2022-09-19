@@ -17,13 +17,16 @@
 
     <!-- Custom styles for this template-->
     <link href="{{url_for('static', filename='css/sb-admin-2.min.css')}}" rel="stylesheet">
-    <!-- <style>
-		#header {
-			background-color:rgb(226, 183, 255);
-            text-align:center;
-			height:100px;
+    <style>
+		.spinner-border {
+			position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 1;
+            width: 3rem;
+            height: 3rem;
 		}
-    </style> -->
+    </style>
 </head>
 <body id="page-top">
 
@@ -394,13 +397,19 @@
                     
                     <div>
                         <h1>MRC</h1>
+                        지방공무원법, 건축법, 국가공무원법 등 감사보고서에 많이 참고되는 법에 대해 질문을 작성하시오
                     </div>
+
                     <div>
                         <form action="/mrc_inference" method="post">
                             <!-- class="form-control form-control-sm" -->
                             <input type="text" class="form-control" name="query" size="100" placeholder="질문을 입력하세요" style="width: 93%; display: inline;">
-                            <input type="submit" class="btn btn-primary" value="정답 추출">
+                            <input type="submit" class="btn btn-primary" value="정답 추출" onclick="submitclick()">
                         </form>
+                    </div>
+                    <!-- 로딩 표시 -->
+                    <div class="spinner-border" id="loadingStatus" role="status" style="display: none;">
+                        <span class="sr-only">Loading...</span>
                     </div>
                     <div>
                     {% block body %} {% endblock %}
@@ -450,6 +459,16 @@
             </div>
         </div>
     </div>
+
+    <!-- 추가 설정 js -->
+    <script>
+        function submitclick(){
+            showLoading();
+        }
+        function showLoading(){
+            $("#loadingStatus").show();
+        }
+    </script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
