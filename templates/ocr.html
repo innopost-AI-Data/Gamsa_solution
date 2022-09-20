@@ -130,7 +130,9 @@
                             </div>
                             <form id="fileForm" action="/inference_ocr" method="post" enctype="multipart/form-data">
                                 <input type="file" id="file" name="file">
-                                <button type="button" id="evaluate_csv" class="btn btn-primary">OCR 변환하기</button>
+                                <button type="button" id="evaluate_csv" class="btn btn-primary" onclick="submitclick()">OCR 변환하기</button>
+                                <!-- 로딩 표시 -->
+                                <img src="static/img/loading.gif" id="loadingStatus" style="display: none;" width="65" height="65">                             
                             </form>
                         </div>
                     </div>
@@ -192,6 +194,17 @@
             </div>
         </div>
     </div>
+
+    <!-- 추가 설정 js -->
+    <script>
+        function submitclick(){
+            console.log('aaaa')
+            showLoading();
+        }
+        function showLoading(){
+            $("#loadingStatus").show();
+        }
+    </script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
