@@ -3,7 +3,7 @@ $('#evaluate_csv').on('click', function () {
     var form_data = new FormData();
     console.log($('#file').prop('files')[0]);
     form_data.append('file', $('#file').prop('files')[0]);
-
+    $("#loadingStatus").show();
     $.ajax({
         type: 'POST',
         url: url,
@@ -11,11 +11,11 @@ $('#evaluate_csv').on('click', function () {
         contentType: false,
         processData: false,
         success: function (data) {
+            $("#loadingStatus").hide();
             $("#csv-result").prepend(data.result);
         }
     });
 });
-
 $(document).on('click', 'button#download_btn', function () {
     filename = $(event.target).attr('name')
     var html = $(event.target).parent().prev().html()
