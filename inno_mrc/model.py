@@ -123,7 +123,7 @@ def main(input):
             stride=doc_stride,
             return_overflowing_tokens=True,
             return_offsets_mapping=True,
-            padding="max_length",
+            padding="max_length"
         )
         
         # Since one example might give us several features if it has a long context, we need a map from a feature to
