@@ -17,7 +17,7 @@ inno_stt 경로안에 나스에서 다운받은 results 폴더 붙여넣기
 ```
 
 ### mrc
-경로의 **pytorch_model.bin** 파일을 inno_mrc\KorQuAD_Gamsa_model에 넣어야 함
+아래 경로의 **pytorch_model.bin** 파일을 inno_mrc\KorQuAD_Gamsa_model에 넣어야 함
 ```
 Y:\01. 프로젝트\23. 2022년 AI바우처 지원사업\감사nlp\mrc_model\KorQuAD_Gamsa_models
 ```
